@@ -17,8 +17,10 @@ ACTION_RE = re.compile(r"Action:\s*(PROPOSE|ACCEPT_OR_REJECT)\b", re.IGNORECASE)
 FENCED_JSON_RE = re.compile(r"```(?:json)?\s*(.*?)```", re.IGNORECASE | re.DOTALL)
 OBSERVATION_RE = re.compile(r"Observation:\s*", re.IGNORECASE)
 
-DEFAULT_OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-4.1-mini")
+DEFAULT_OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-5-mini")
 DEFAULT_OPENAI_TIMEOUT = float(os.environ.get("OPENAI_TIMEOUT_SECONDS", "8"))
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+OPENAI_API_URL = os.environ.get("OPENAI_API_URL")
 
 
 @dataclass(slots=True)
