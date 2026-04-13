@@ -13,6 +13,30 @@ from a2a.types import (
 from executor import Executor
 
 
+def create_agent_card(url: str) -> AgentCard:
+    skill = AgentSkill(
+        id="meta-game-bargaining",
+        name="Meta-Game Bargaining",
+        description="Responds to bargaining prompts from the evaluator with valid JSON offers or accept/reject decisions.",
+        tags=["bargaining", "negotiation", "a2a", "agentbeats"],
+        examples=[
+            "Evaluate an offer against a BATNA and reply with {\"accept\": true}.",
+            "Return a valid allocation split with allocation_self and allocation_other.",
+        ],
+    )
+
+    return AgentCard(
+        name="Meta-Game Negotiator",
+        description="A reliable bargaining responder for the Meta-Game evaluator with deterministic fallbacks and optional OpenAI assistance.",
+        url=url,
+        version="1.0.0",
+        default_input_modes=["text"],
+        default_output_modes=["text"],
+        capabilities=AgentCapabilities(streaming=True),
+        skills=[skill],
+    )
+
+
 def main():
     parser = argparse.ArgumentParser(description="Run the A2A agent.")
     parser.add_argument("--host", type=str, default="127.0.0.1", help="Host to bind the server")
@@ -20,27 +44,7 @@ def main():
     parser.add_argument("--card-url", type=str, help="URL to advertise in the agent card")
     args = parser.parse_args()
 
-    # Fill in your agent card
-    # See: https://a2a-protocol.org/latest/tutorials/python/3-agent-skills-and-card/
-    
-    skill = AgentSkill(
-        id="",
-        name="",
-        description="",
-        tags=[],
-        examples=[]
-    )
-
-    agent_card = AgentCard(
-        name="",
-        description="",
-        url=args.card_url or f"http://{args.host}:{args.port}/",
-        version='1.0.0',
-        default_input_modes=['text'],
-        default_output_modes=['text'],
-        capabilities=AgentCapabilities(streaming=True),
-        skills=[skill]
-    )
+    agent_card = create_agent_card(args.card_url or f"http://{args.host}:{args.port}/")
 
     request_handler = DefaultRequestHandler(
         agent_executor=Executor(),
